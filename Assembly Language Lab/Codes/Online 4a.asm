@@ -1,0 +1,16 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+STR DW 'SAKIB$'
+CHAR DB ?
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    
+    
+    MOV AH,4CH
+    INT 21H
+    
+    END MAIN

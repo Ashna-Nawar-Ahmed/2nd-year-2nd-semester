@@ -1,0 +1,32 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+MSG1 DW 'ENTER UPPERCASE LETTER:$'
+MSG2 DW 0AH,0DH,'LOWERCASE LETTER IS:$' 
+CHAR DB ?
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    LEA DX,MSG1
+    MOV AH,9
+    INT 21H
+    
+    MOV AH,1
+    INT 21H
+    MOV CHAR,AL
+    ADD CHAR,20H
+    
+    LEA DX,MSG2
+    MOV AH,9
+    INT 21H
+    
+    MOV DL,CHAR
+    MOV AH,2
+    INT 21H
+    
+    MOV AH,4CH
+    INT 21H
+    END MAIN
+    

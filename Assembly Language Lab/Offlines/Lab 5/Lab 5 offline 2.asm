@@ -1,0 +1,38 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+MSG1 DB 'ENTER AN UPPERCASE LETTER:$'
+MSG2 DB 0DH,0AH,'IN LOWERCASE IT IS:$'
+CHAR DB ?
+
+.CODE
+MAIN PROC 
+    ;INITIALIZATION
+    MOV AX,@DATA
+    MOV DS,AX     
+    
+    ;MSG1 OUTPUT
+    LEA DX,MSG1
+    MOV AH,9
+    INT 21H
+    
+    ;INPUT CHARACTER IN UPPERCASE AND CONVERT TO LOWERCASE
+    MOV AH,1
+    INT 21H
+    ADD AL,20H
+    MOV CHAR,AL                                
+    
+    ;OUTPUT MSG2
+    LEA DX,MSG2
+    MOV AH,9
+    INT 21H    
+    
+    ;OUTPUT CHARACTER IN LOWERCASE
+    MOV DL,CHAR
+    MOV AH,2
+    INT 21H
+                             
+    ;TERMINATION                         
+    MOV AH,4CH
+    INT 21H
+    END MAIN

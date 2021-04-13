@@ -1,0 +1,92 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+A DB ?  
+B DB ?
+STR DB 0AH,0DH,'1$'
+STR1 DB 0AH,0DH,'ENTER HEX DIGIT:$' 
+STR2 DB 0AH,0DH,'DO YOU WANT TO DO IT AGAIN?$'
+STR3 DB 0AH,0DH,'TRY AGAIN$'
+.CODE
+MAIN PROC
+    MOV AX,@DATA 
+    MOV DS,AX 
+    
+    OUTPUT_DECIMAL:
+    ;OUTPUT STR1
+    LEA DX,STR1
+    MOV AH,9
+    INT 21H  
+    
+    ;INPUT CHARACTER
+    MOV AH,1
+    INT 21H 
+    MOV A,AL    
+    
+    ;COMPARE A WITH 0-9
+    MOV AL,A
+    CMP AL,'9'
+    JLE NORMAL_DECIMAL
+    JG HEX_DECIMAL
+    
+    NORMAL_DECIMAL: 
+    ;NEWLINE
+    MOV DL,0AH
+    MOV AH,2
+    INT 21H  
+    MOV DL,0DH
+    MOV AH,2
+    INT 21H
+    ;OUTPUT FOR 0-9 
+    MOV DL,A
+    MOV AH,2
+    INT 21H 
+    JMP AGAIN 
+     
+    HEX_DECIMAL:  
+    ;OUTPUT FOR A-F
+    LEA DX,STR
+    MOV AH,9
+    INT 21H  
+    MOV DL,A 
+    SUB DL,17
+    MOV AH,2
+    INT 21H   
+    
+    AGAIN:
+    ;OUTPUT STR2
+    LEA DX,STR2
+    MOV AH,9
+    INT 21H    
+    
+    ;INPUT CHARACTER
+    MOV AH,1
+    INT 21H 
+    MOV B,AL    
+    
+    ;COMPARE B WITH 'Y'
+    MOV AL,B
+    CMP AL,'Y'
+    JE OUTPUT_DECIMAL 
+    JNE COMP_N
+    
+    COMP_N:   
+    ;COMPARE B WITH 'N'
+    MOV AL,B
+    CMP AL,'N'
+    JE LAST
+    JNE TRY_AGAIN
+    
+    TRY_AGAIN: 
+    ;OUTPUT STR3
+    LEA DX,STR3
+    MOV AH,9
+    INT 21H  
+    JMP OUTPUT_DECIMAL
+    
+    
+    LAST:
+    ;TERMINATION
+    MOV AH,4CH
+    INT 21H
+    END MAIN

@@ -1,0 +1,33 @@
+.MODEL SMALL
+.STACK 100H
+.DATA  
+MSG1 DB 'HAPPINESS CAN BE FOUND$'
+
+MSG3 DB 0DH,'IN THE DARKEST OF TIMES$'
+
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX 
+    
+    LEA DX,MSG1
+    MOV AH,9
+    INT 21H   
+    
+    MOV DL,0AH
+    MOV AH,2
+    INT 21H
+    MOV DL,0DH
+    MOV AH,2 
+    INT 21H
+    
+    LEA DX,MSG3
+    MOV AH,9
+    INT 21H
+    
+    
+    
+    MOV AH,4CH
+    INT 21H
+    
+    END MAIN

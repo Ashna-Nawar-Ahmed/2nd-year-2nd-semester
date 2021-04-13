@@ -1,0 +1,30 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+A DB ?
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV DL,0
+    MOV AH,1
+    INT 21H
+    BLEH:
+    CMP AL,0DH
+    JE END_BLEH
+    INC DL
+    INT 21H
+    JMP BLEH 
+    
+    END_BLEH:
+    MOV A,DL
+    ;LEA DX,DX
+    MOV DL,A
+    MOV AH,2
+    INT 21H
+
+    
+    MOV AH,4CH
+    INT 21H
+    END MAIN
